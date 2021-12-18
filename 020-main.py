@@ -27,10 +27,10 @@ class Existence:
     results = attr.ib(factory=dict)
 
     def __attrs_post_init__(self):
-        e1 = self.get_experience('e1')
-        e2 = self.get_experience('e2')
-        r1 = self.get_result('r1')
-        r2 = self.get_result('r2')
+        e1 = self.get_experience("e1")
+        e2 = self.get_experience("e2")
+        r1 = self.get_result("r1")
+        r2 = self.get_result("r2")
         self.setup_interaction(e1, r1, -1)
         self.setup_interaction(e1, r2, 1)
         self.setup_interaction(e2, r1, -1)
@@ -58,11 +58,13 @@ class Existence:
                 return e
 
     def create_result(self, experience: Experiment) -> Result:
-        if experience == self.get_experience('e1'):
-            return self.get_result('r1')
-        return self.get_result('r2')
+        if experience == self.get_experience("e1"):
+            return self.get_result("r1")
+        return self.get_result("r2")
 
-    def setup_interaction(self, experience: Experiment, result: Result, valence: int = None) -> Interaction:
+    def setup_interaction(
+        self, experience: Experiment, result: Result, valence: int = None
+    ) -> Interaction:
         interaction = self.get_interaction(experience.label + result.label)
         interaction.experience = experience
         interaction.result = result
@@ -79,25 +81,25 @@ class Existence:
     def step(self) -> str:
         experience = self.prev_experience
 
-        if self.mood == 'pained':
+        if self.mood == "pained":
             experience = self.swap_experience(experience)
 
         result = self.create_result(experience)
         interaction = self.setup_interaction(experience, result)
 
         if interaction.valence > 0:
-            self.mood = 'pleased'
+            self.mood = "pleased"
         else:
-            self.mood = 'pained'
+            self.mood = "pained"
 
         self.prev_experience = experience
 
-        return f'{experience.label}{result.label} {self.mood}'
+        return f"{experience.label}{result.label} {self.mood}"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     existence = Existence()
 
     for i in range(20):
         trace = existence.step()
-        print(f'{i:02d}: {trace}')
+        print(f"{i:02d}: {trace}")

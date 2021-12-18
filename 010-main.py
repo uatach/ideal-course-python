@@ -26,8 +26,8 @@ class Existence:
     results = attr.ib(factory=dict)
 
     def __attrs_post_init__(self):
-        experience = self.get_experience('e1')
-        self.get_experience('e2')
+        experience = self.get_experience("e1")
+        self.get_experience("e2")
         self.prev_experience = experience
 
     def get_experience(self, label: str) -> Experiment:
@@ -51,9 +51,9 @@ class Existence:
                 return e
 
     def create_result(self, experience: Experiment) -> Result:
-        if experience == self.get_experience('e1'):
-            return self.get_result('r1')
-        return self.get_result('r2')
+        if experience == self.get_experience("e1"):
+            return self.get_result("r1")
+        return self.get_result("r2")
 
     def setup_interaction(self, experience: Experiment, result: Result) -> Interaction:
         interaction = self.get_interaction(experience.label + result.label)
@@ -70,7 +70,7 @@ class Existence:
     def step(self) -> str:
         experience = self.prev_experience
 
-        if self.mood == 'bored':
+        if self.mood == "bored":
             experience = self.swap_experience(experience)
             self.satisfaction = 0
 
@@ -80,23 +80,23 @@ class Existence:
         self.setup_interaction(experience, result)
 
         if antecipated == result:
-            self.mood = 'satisfied'
+            self.mood = "satisfied"
             self.satisfaction += 1
         else:
-            self.mood = 'frustrated'
+            self.mood = "frustrated"
             self.satisfaction = 0
 
         if self.satisfaction > 4:
-            self.mood = 'bored'
+            self.mood = "bored"
 
         self.prev_experience = experience
 
-        return f'{experience.label}{result.label} {self.mood}'
+        return f"{experience.label}{result.label} {self.mood}"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     existence = Existence()
 
     for i in range(20):
         trace = existence.step()
-        print(f'{i:02d}: {trace}')
+        print(f"{i:02d}: {trace}")
