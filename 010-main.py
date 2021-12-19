@@ -13,71 +13,65 @@ class Result:
 
 @attr.s
 class Interaction:
-    label = attr.ib()
-    experience = attr.ib(None)
-    result = attr.ib(None)
+    experiment = attr.ib()
+    result = attr.ib()
+
+    @property
+    def label(self):
+        return self.experiment.label + self.result.label
+
+
+@attr.s
+class Environment:
+    def perform(self, experiment: Experiment) -> Result:
+        if experiment == Experiment("e1"):
+            return Result("r1")
+        return Result("r2")
 
 
 @attr.s
 class Existence:
-    mood = attr.ib(None)
-    experiences = attr.ib(factory=dict)
-    interactions = attr.ib(factory=dict)
-    results = attr.ib(factory=dict)
+    env = attr.ib()
+
+    mood = None
+    experience = None
+    experiments = dict()
+    interactions = dict()
+    satisfaction = 0
 
     def __attrs_post_init__(self):
-        experience = self.get_experience("e1")
-        self.get_experience("e2")
-        self.prev_experience = experience
+        self.experience = self.get_experiment("e1")
+        self.get_experiment("e2")
 
-    def get_experience(self, label: str) -> Experiment:
-        if label not in self.experiences:
-            self.experiences[label] = Experiment(label)
-        return self.experiences[label]
+    def get_experiment(self, label: str) -> Experiment:
+        return self.experiments.setdefault(label, Experiment(label))
 
-    def get_result(self, label: str) -> Result:
-        if label not in self.results:
-            self.results[label] = Result(label)
-        return self.results[label]
+    def get_interaction(self, experiment: Experiment, result: Result) -> Interaction:
+        interaction = Interaction(experiment, result)
+        return self.interactions.setdefault(interaction.label, interaction)
 
-    def get_interaction(self, label: str) -> Interaction:
-        if label not in self.interactions:
-            self.interactions[label] = Interaction(label)
-        return self.interactions[label]
-
-    def swap_experience(self, experience: Experiment) -> Experiment:
-        for e in self.experiences.values():
-            if e != experience:
+    def swap(self, experiment: Experiment) -> Experiment:
+        for e in self.experiments.values():
+            if e != experiment:
                 return e
 
-    def create_result(self, experience: Experiment) -> Result:
-        if experience == self.get_experience("e1"):
-            return self.get_result("r1")
-        return self.get_result("r2")
-
-    def setup_interaction(self, experience: Experiment, result: Result) -> Interaction:
-        interaction = self.get_interaction(experience.label + result.label)
-        interaction.experience = experience
-        interaction.result = result
-        return interaction
-
-    def predict_result(self, experience: Experiment) -> Result:
+    def predict(self, experiment: Experiment) -> Result:
         for i in self.interactions.values():
-            if i.experience == experience:
+            if i.experiment == experiment:
                 return i.result
         return None
 
     def step(self) -> str:
-        experience = self.prev_experience
+        experiment = self.experience
 
         if self.mood == "bored":
-            experience = self.swap_experience(experience)
+            experiment = self.swap(experiment)
             self.satisfaction = 0
 
-        antecipated = self.predict_result(experience)
-        result = self.create_result(experience)
+        antecipated = self.predict(experiment)
+        result = self.env.perform(experiment)
 
-        self.setup_interaction(experience, result)
+        interaction = self.get_interaction(experiment, result)
 
         if antecipated == result:
             self.mood = "satisfied"
@@ -89,13 +83,14 @@ class Existence:
         if self.satisfaction > 4:
             self.mood = "bored"
 
-        self.prev_experience = experience
+        self.experience = experiment
 
-        return f"{experience.label}{result.label} {self.mood}"
+        return f"{interaction.label} {self.mood}"
 
 
 if __name__ == "__main__":
-    existence = Existence()
+    env = Environment()
+    existence = Existence(env)
 
     for i in range(20):
         trace = existence.step()
