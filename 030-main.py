@@ -90,10 +90,12 @@ class Existence:
         interaction = PrimitiveInteraction(experiment, result, valence)
         return self.interactions.setdefault(interaction.label, interaction)
 
-    def get_composite_interaction(self, anterior: Interaction, posterior: Interaction) -> Interaction:
+    def get_composite_interaction(
+        self, anterior: Interaction, posterior: Interaction
+    ) -> Interaction:
         interaction = CompositeInteraction(anterior, posterior)
         self.interactions[interaction.label] = interaction
-        print(f'learn: {interaction.label} | {interaction.valence}')
+        print(f"learn: {interaction.label} | {interaction.valence}")
         return interaction
 
     def swap(self, interaction: typing.Optional[Interaction]) -> Interaction:
@@ -101,14 +103,17 @@ class Existence:
             return list(self.interactions.values())[0]
 
         for i in self.interactions.values():
-            if isinstance(i, PrimitiveInteraction) and i.experiment != interaction.experiment:
+            if (
+                isinstance(i, PrimitiveInteraction)
+                and i.experiment != interaction.experiment
+            ):
                 return i
 
     def get_active(self, experience: Interaction) -> typing.List[Interaction]:
         interactions = []
         for i in self.interactions.values():
             if isinstance(i, CompositeInteraction) and i.anterior == experience:
-                print(f'activated: {i.label}')
+                print(f"activated: {i.label}")
                 interactions.append(i)
         return interactions
 
@@ -117,7 +122,7 @@ class Existence:
         for i in self.get_active(experience):
             interaction = i.posterior
             anticipations.append(Anticipation(interaction))
-            print(f'afforded: {interaction.label} | {interaction.valence}')
+            print(f"afforded: {interaction.label} | {interaction.valence}")
         return anticipations
 
     def select(self, anticipations: typing.List[Anticipation]) -> Interaction:
@@ -132,7 +137,11 @@ class Existence:
 
     def find(self, experiment: Experiment, result: Result) -> Interaction:
         for i in self.interactions.values():
-            if isinstance(i, PrimitiveInteraction) and i.experiment == experiment and i.result == result:
+            if (
+                isinstance(i, PrimitiveInteraction)
+                and i.experiment == experiment
+                and i.result == result
+            ):
                 return i
 
     def step(self) -> str:
@@ -141,12 +150,12 @@ class Existence:
 
         result = self.env.perform(experiment)
         interaction = self.find(experiment, result)
-        print(f'enacted: {interaction.label} | {interaction.valence}')
+        print(f"enacted: {interaction.label} | {interaction.valence}")
 
         if interaction.valence > 0:
-            self.mood = 'pleased'
+            self.mood = "pleased"
         else:
-            self.mood = 'pained'
+            self.mood = "pained"
 
         if self.experience is not None:
             self.get_composite_interaction(self.experience, interaction)
@@ -163,4 +172,4 @@ if __name__ == "__main__":
     for i in range(20):
         trace = existence.step()
         print(f"{i:02d}: {trace}")
-        print(15 * '-')
+        print(15 * "-")

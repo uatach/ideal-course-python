@@ -61,11 +61,11 @@ class Environment:
     def perform(self, experiment: Experiment) -> Result:
         self.clock += 1
         if self.clock <= 8 or self.clock > 15:
-            if experiment == Experiment('e1'):
+            if experiment == Experiment("e1"):
                 return self.get_result("r1")
             return self.get_result("r2")
 
-        if experiment == Experiment('e1'):
+        if experiment == Experiment("e1"):
             return self.get_result("r2")
         return self.get_result("r1")
 
@@ -98,17 +98,21 @@ class Existence:
         interaction = PrimitiveInteraction(experiment, result, valence)
         return self.interactions.setdefault(interaction.label, interaction)
 
-    def get_composite_interaction(self, anterior: Interaction, posterior: Interaction, weight: int) -> Interaction:
+    def get_composite_interaction(
+        self, anterior: Interaction, posterior: Interaction, weight: int
+    ) -> Interaction:
         interaction = CompositeInteraction(anterior, posterior, weight)
         self.interactions[interaction.label] = interaction
-        print(f'learn: {interaction.label} | {interaction.valence} | {interaction.weight}')
+        print(
+            f"learn: {interaction.label} | {interaction.valence} | {interaction.weight}"
+        )
         return interaction
 
     def get_active(self, experience: Interaction) -> typing.List[Interaction]:
         interactions = []
         for i in self.interactions.values():
             if isinstance(i, CompositeInteraction) and i.anterior == experience:
-                print(f'activated: {i.label}')
+                print(f"activated: {i.label}")
                 interactions.append(i)
         return interactions
 
@@ -126,17 +130,27 @@ class Existence:
         anticipations = list(sorted(anticipations, reverse=True))
 
         for a in anticipations:
-            print(f'propose: {a.experiment.label} | {a.proclivity}')
+            print(f"propose: {a.experiment.label} | {a.proclivity}")
         return anticipations[0].experiment
 
     def find_primitive(self, experiment: Experiment, result: Result) -> Interaction:
         for i in self.interactions.values():
-            if isinstance(i, PrimitiveInteraction) and i.experiment == experiment and i.result == result:
+            if (
+                isinstance(i, PrimitiveInteraction)
+                and i.experiment == experiment
+                and i.result == result
+            ):
                 return i
 
-    def find_composite(self, anterior: Interaction, posterior: Interaction) -> Interaction:
+    def find_composite(
+        self, anterior: Interaction, posterior: Interaction
+    ) -> Interaction:
         for i in self.interactions.values():
-            if isinstance(i, CompositeInteraction) and i.anterior == anterior and i.posterior == posterior:
+            if (
+                isinstance(i, CompositeInteraction)
+                and i.anterior == anterior
+                and i.posterior == posterior
+            ):
                 i.weight += 1
                 return i
         return self.get_composite_interaction(anterior, posterior, 1)
@@ -147,12 +161,12 @@ class Existence:
 
         result = self.env.perform(experiment)
         interaction = self.find_primitive(experiment, result)
-        print(f'enacted: {interaction.label} | {interaction.valence}')
+        print(f"enacted: {interaction.label} | {interaction.valence}")
 
         if interaction.valence > 0:
-            self.mood = 'pleased'
+            self.mood = "pleased"
         else:
-            self.mood = 'pained'
+            self.mood = "pained"
 
         if self.experience is not None:
             self.find_composite(self.experience, interaction)
@@ -169,4 +183,4 @@ if __name__ == "__main__":
     for i in range(20):
         trace = existence.step()
         print(f"{i:02d}: {trace}")
-        print(15 * '-')
+        print(15 * "-")
