@@ -68,12 +68,12 @@ class Existence:
             experiment = self.swap(experiment)
             self.satisfaction = 0
 
-        antecipated = self.predict(experiment)
+        anticipated = self.predict(experiment)
         result = self.env.perform(experiment)
 
         interaction = self.get_interaction(experiment, result)
 
-        if antecipated == result:
+        if anticipated == result:
             self.mood = "satisfied"
             self.satisfaction += 1
         else:

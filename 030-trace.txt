@@ -1,0 +1,125 @@
+enacted: e1r2 | 1
+00: pleased
+---------------
+enacted: e1r1 | -1
+learn: e1r2e1r1 | 0
+01: pained
+---------------
+enacted: e1r1 | -1
+learn: e1r1e1r1 | -2
+02: pained
+---------------
+activated: e1r1e1r1
+afforded: e1r1 | -1
+enacted: e2r2 | 1
+learn: e1r1e2r2 | 0
+03: pleased
+---------------
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+04: pleased
+---------------
+activated: e1r2e1r1
+afforded: e1r1 | -1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+05: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+06: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+07: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+08: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+09: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+10: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+11: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+12: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+13: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+14: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+15: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+16: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+17: pleased
+---------------
+activated: e2r2e1r2
+afforded: e1r2 | 1
+enacted: e1r2 | 1
+learn: e2r2e1r2 | 2
+18: pleased
+---------------
+activated: e1r2e1r1
+activated: e1r2e2r2
+afforded: e1r1 | -1
+afforded: e2r2 | 1
+enacted: e2r2 | 1
+learn: e1r2e2r2 | 2
+19: pleased
+---------------

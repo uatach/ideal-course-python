@@ -14,15 +14,32 @@ class Result:
 
 @attr.s
 class Interaction:
-    label = attr.ib()
-    experience = attr.ib(None)
-    result = attr.ib(None)
-    valence = attr.ib(None)
-    prev_interaction = attr.ib(None)
-    next_interaction = attr.ib(None)
+    pass
 
-    def is_primitive(self) -> bool:
-        return self.prev_interaction is None
+
+@attr.s
+class PrimitiveInteraction(Interaction):
+    experiment = attr.ib()
+    result = attr.ib()
+    valence = attr.ib()
+
+    @property
+    def label(self):
+        return self.experiment.label + self.result.label
+
+
+@attr.s
+class CompositeInteraction(Interaction):
+    anterior = attr.ib()
+    posterior = attr.ib()
+
+    @property
+    def label(self):
+        return self.anterior.label + self.posterior.label
+
+    @property
+    def valence(self):
+        return self.anterior.valence + self.posterior.valence
 
 
 @attr.s
@@ -31,120 +48,99 @@ class Anticipation:
 
 
 @attr.s
+class Environment:
+    results = dict()
+    experiment = None
+
+    def get_result(self, label: str) -> Experiment:
+        return self.results.setdefault(label, Experiment(label))
+
+    def perform(self, experiment: Experiment) -> Result:
+        if self.experiment == experiment:
+            return self.get_result("r1")
+        self.experiment = experiment
+        return self.get_result("r2")
+
+
+@attr.s
 class Existence:
-    mood = attr.ib(None)
-    experiences = attr.ib(factory=dict)
-    interactions = attr.ib(factory=dict)
-    results = attr.ib(factory=dict)
-    satisfaction = attr.ib(0)
-    prev_experience = attr.ib(None)
-    enacted_interaction = attr.ib(None)
+    env = attr.ib()
+
+    mood = None
+    experience = None
+    experiments = dict()
+    interactions = dict()
 
     def __attrs_post_init__(self):
-        e1 = self.get_experience("e1")
-        e2 = self.get_experience("e2")
-        r1 = self.get_result("r1")
-        r2 = self.get_result("r2")
-        self.setup_interaction(e1, r1, -1)
-        self.setup_interaction(e1, r2, 1)
-        self.setup_interaction(e2, r1, -1)
-        self.setup_interaction(e2, r2, 1)
+        e1 = self.get_experiment("e1")
+        e2 = self.get_experiment("e2")
+        r1 = self.env.get_result("r1")
+        r2 = self.env.get_result("r2")
+        self.get_primitive_interaction(e1, r1, -1)
+        self.get_primitive_interaction(e1, r2, 1)
+        self.get_primitive_interaction(e2, r1, -1)
+        self.get_primitive_interaction(e2, r2, 1)
 
-    def get_experience(self, label: str) -> Experiment:
-        if label not in self.experiences:
-            self.experiences[label] = Experiment(label)
-        return self.experiences[label]
+    def get_experiment(self, label: str) -> Experiment:
+        return self.experiments.setdefault(label, Experiment(label))
 
-    def get_result(self, label: str) -> Result:
-        if label not in self.results:
-            self.results[label] = Result(label)
-        return self.results[label]
+    def get_primitive_interaction(
+        self, experiment: Experiment, result: Result, valence: int
+    ) -> Interaction:
+        interaction = PrimitiveInteraction(experiment, result, valence)
+        return self.interactions.setdefault(interaction.label, interaction)
 
-    def get_interaction(self, label: str) -> Interaction:
-        if label not in self.interactions:
-            self.interactions[label] = Interaction(label)
-        return self.interactions[label]
-
-    def get_composite_interaction(self, prev_interaction: Interaction, next_interaction: Interaction) -> Interaction:
-        valence = prev_interaction.valence + next_interaction.valence
-        interaction = self.get_interaction(prev_interaction.label + next_interaction.label)
-        interaction.prev_interaction = prev_interaction
-        interaction.next_interaction = next_interaction
-        interaction.valence = valence
+    def get_composite_interaction(self, anterior: Interaction, posterior: Interaction) -> Interaction:
+        interaction = CompositeInteraction(anterior, posterior)
+        self.interactions[interaction.label] = interaction
         print(f'learn: {interaction.label} | {interaction.valence}')
         return interaction
 
-    # unused
-    def swap_experience(self, experience: Experiment) -> Experiment:
-        for e in self.experiences.values():
-            if e != experience:
-                return e
-
-    def swap_interaction(self, interaction: typing.Optional[Interaction]) -> Interaction:
+    def swap(self, interaction: typing.Optional[Interaction]) -> Interaction:
         if interaction is None:
             return list(self.interactions.values())[0]
 
         for i in self.interactions.values():
-            if i.experience is not None and i.experience != interaction.experience:
+            if isinstance(i, PrimitiveInteraction) and i.experiment != interaction.experiment:
                 return i
 
-    def setup_interaction(
-        self, experience: Experiment, result: Result, valence: int = None
-    ) -> Interaction:
-        interaction = self.get_interaction(experience.label + result.label)
-        interaction.experience = experience
-        interaction.result = result
-        if valence:
-            interaction.valence = valence
-        return interaction
-
-    def learn_composite_interaction(self, interaction: Interaction):
-        prev_interaction = self.enacted_interaction
-        next_interaction = interaction
-        if prev_interaction is not None:
-            self.get_composite_interaction(prev_interaction, next_interaction)
-
-    # unused
-    def predict_result(self, experience: Experiment) -> Result:
-        for i in self.interactions.values():
-            if i.experience == experience and i.valence > 0:
-                return i.result
-        return None
-
-    def get_activated_interactions(self) -> typing.List[Interaction]:
+    def get_active(self, experience: Interaction) -> typing.List[Interaction]:
         interactions = []
-        if self.enacted_interaction is not None:
-            for i in self.interactions.values():
-                if i.prev_interaction == self.enacted_interaction:
-                    interactions.append(i)
+        for i in self.interactions.values():
+            if isinstance(i, CompositeInteraction) and i.anterior == experience:
+                print(f'activated: {i.label}')
+                interactions.append(i)
         return interactions
 
-    def anticipate(self) -> typing.List[Anticipation]:
+    def anticipate(self, experience: Interaction) -> typing.List[Anticipation]:
         anticipations = []
-        if self.enacted_interaction is not None:
-            for i in self.get_activated_interactions():
-                interaction = i.next_interaction
-                anticipations.append(Anticipation(interaction))
-                print(f'afforded: {interaction.label} | {interaction.valence}')
+        for i in self.get_active(experience):
+            interaction = i.posterior
+            anticipations.append(Anticipation(interaction))
+            print(f'afforded: {interaction.label} | {interaction.valence}')
         return anticipations
 
-    def select_interaction(self, anticipations: typing.List[Anticipation]) -> Interaction:
+    def select(self, anticipations: typing.List[Anticipation]) -> Interaction:
         anticipations = list(reversed(sorted(anticipations)))
 
         if len(anticipations):
             interaction = anticipations[0].interaction
             if interaction.valence >= 0:
                 return interaction
-            return self.swap_interaction(interaction)
-        return self.swap_interaction(None)
+            return self.swap(interaction)
+        return self.swap(None)
+
+    def find(self, experiment: Experiment, result: Result) -> Interaction:
+        for i in self.interactions.values():
+            if isinstance(i, PrimitiveInteraction) and i.experiment == experiment and i.result == result:
+                return i
 
     def step(self) -> str:
-        anticipations = self.anticipate()
-        experience = self.select_interaction(anticipations).experience
+        anticipations = self.anticipate(self.experience)
+        experiment = self.select(anticipations).experiment
 
-        result = self.create_result(experience)
-
-        interaction = self.get_interaction(experience.label + result.label)
+        result = self.env.perform(experiment)
+        interaction = self.find(experiment, result)
         print(f'enacted: {interaction.label} | {interaction.valence}')
 
         if interaction.valence > 0:
@@ -152,21 +148,19 @@ class Existence:
         else:
             self.mood = 'pained'
 
-        self.learn_composite_interaction(interaction)
-        self.enacted_interaction = interaction
+        if self.experience is not None:
+            self.get_composite_interaction(self.experience, interaction)
+
+        self.experience = interaction
 
         return self.mood
 
-    def create_result(self, experience: Experiment) -> Result:
-        if self.prev_experience == experience:
-            return self.get_result("r1")
-        self.prev_experience = experience
-        return self.get_result("r2")
-
 
 if __name__ == "__main__":
-    existence = Existence()
+    env = Environment()
+    existence = Existence(env)
 
     for i in range(20):
         trace = existence.step()
         print(f"{i:02d}: {trace}")
+        print(15 * '-')

@@ -69,7 +69,7 @@ class Existence:
             if e != experiment:
                 return e
 
-    def find_interaction(self, experiment: Experiment, result: Result) -> Interaction:
+    def find(self, experiment: Experiment, result: Result) -> Interaction:
         for i in self.interactions.values():
             if i.experiment == experiment and i.result == result:
                 return i
@@ -81,7 +81,7 @@ class Existence:
             experiment = self.swap(experiment)
 
         result = self.env.perform(experiment)
-        interaction = self.find_interaction(experiment, result)
+        interaction = self.find(experiment, result)
 
         if interaction.valence > 0:
             self.mood = "pleased"
