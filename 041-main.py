@@ -55,17 +55,21 @@ class Anticipation:
 @attr.s
 class Environment:
     results = dict()
-    experiments = [None, None]
+    experiments = [None, None, None]
 
     def get_result(self, label: str) -> Result:
         return self.results.setdefault(label, Result(label))
 
     def perform(self, experiment: Experiment) -> Result:
         result = self.get_result("r1")
-        if self.experiments[0] != experiment and self.experiments[1] == experiment:
+        if (
+            self.experiments[0] != experiment
+            and self.experiments[1] == experiment
+            and self.experiments[2] == experiment
+        ):
             result = self.get_result("r2")
 
-        self.experiments = [self.experiments[1], experiment]
+        self.experiments = self.experiments[1:] + [experiment]
         return result
 
 
@@ -160,7 +164,7 @@ class Existence:
     def select(self, anticipations: typing.List[Anticipation]) -> Interaction:
         anticipations = list(sorted(anticipations, reverse=True))
 
-        for a in anticipations:
+        for a in anticipations[:5]:
             print(f"propose: {a.experiment.label} | {a.proclivity}")
         return anticipations[0].experiment
 
@@ -172,6 +176,7 @@ class Existence:
                 and i.result == result
             ):
                 return i
+        return self.get_primitive_interaction(experiment, result, -1)
 
     def find_composite(
         self, anterior: Interaction, posterior: Interaction
