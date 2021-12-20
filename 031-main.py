@@ -55,8 +55,8 @@ class Environment:
     experiment = None
     clock = 0
 
-    def get_result(self, label: str) -> Experiment:
-        return self.results.setdefault(label, Experiment(label))
+    def get_result(self, label: str) -> Result:
+        return self.results.setdefault(label, Result(label))
 
     def perform(self, experiment: Experiment) -> Result:
         self.clock += 1

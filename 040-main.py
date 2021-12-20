@@ -56,8 +56,8 @@ class Environment:
     results = dict()
     experiments = [None, None]
 
-    def get_result(self, label: str) -> Experiment:
-        return self.results.setdefault(label, Experiment(label))
+    def get_result(self, label: str) -> Result:
+        return self.results.setdefault(label, Result(label))
 
     def perform(self, experiment: Experiment) -> Result:
         result = self.get_result("r1")
@@ -73,10 +73,9 @@ class Existence:
     env = attr.ib()
 
     mood = None
-    experience = None
+    memory = (None, None)
     experiments = dict()
     interactions = dict()
-    super_experience = None
 
     def __attrs_post_init__(self):
         e1 = self.get_experiment("e1")
@@ -120,15 +119,17 @@ class Existence:
         return interaction
 
     def get_active(
-        self, experience: Interaction, super_experience: Interaction
+        self, experiences: typing.List[Interaction]
     ) -> typing.List[Interaction]:
         context = []
-        if experience is not None:
-            context.append(experience)
-            if not isinstance(experience, PrimitiveInteraction):
-                context.append(experience.posterior)
-            if super_experience is not None:
-                context.append(super_experience)
+        if experiences[0] is not None:
+            context.append(experiences[0])
+
+        if experiences[1] is not None:
+            context.append(experiences[1])
+
+        if isinstance(experiences[1], CompositeInteraction):
+            context.append(experiences[1].posterior)
 
         interactions = []
         for i in self.interactions.values():
@@ -138,12 +139,12 @@ class Existence:
         return interactions
 
     def anticipate(
-        self, experience: Interaction, super_experience: Interaction
+        self, interactions: typing.List[Interaction]
     ) -> typing.List[Anticipation]:
         anticipations = [
             Anticipation(e, 0) for e in self.experiments.values() if not e.abstract
         ]
-        for i in self.get_active(experience, super_experience):
+        for i in interactions:
             proclivity = i.weight * i.posterior.valence
             proposition = Anticipation(i.posterior.experiment, proclivity)
             append = True
@@ -202,7 +203,8 @@ class Existence:
         return self.find_composite(anterior, posterior)
 
     def step(self) -> str:
-        anticipations = self.anticipate(self.experience, self.super_experience)
+        interactions = self.get_active(self.memory)
+        anticipations = self.anticipate(interactions)
         experiment = self.select(anticipations)
 
         intended = experiment.interaction
@@ -221,17 +223,16 @@ class Existence:
         else:
             self.mood = "pained"
 
-        super_experience = None
+        experience = None
 
-        if self.experience is not None:
-            super_experience = self.find_composite(self.experience, enacted)
+        if self.memory[1] is not None:
+            experience = self.find_composite(self.memory[1], enacted)
 
-        if self.super_experience:
-            self.find_composite(self.super_experience.anterior, super_experience)
-            self.find_composite(self.super_experience, enacted)
+        if self.memory[0] is not None:
+            self.find_composite(self.memory[0].anterior, experience)
+            self.find_composite(self.memory[0], enacted)
 
-        self.super_experience = super_experience
-        self.experience = enacted
+        self.memory = (experience, enacted)
 
         return self.mood
 

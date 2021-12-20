@@ -52,8 +52,8 @@ class Environment:
     results = dict()
     experiment = None
 
-    def get_result(self, label: str) -> Experiment:
-        return self.results.setdefault(label, Experiment(label))
+    def get_result(self, label: str) -> Result:
+        return self.results.setdefault(label, Result(label))
 
     def perform(self, experiment: Experiment) -> Result:
         if self.experiment == experiment:
