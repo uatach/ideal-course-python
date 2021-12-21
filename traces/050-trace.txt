@@ -1,0 +1,299 @@
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: e1r2 | 3
+enacted: e1r1 | -1
+00: pained
+---------------
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: e1r2 | 3
+enacted: e1r2 | 3
+learn: <e1r1e1r2> | 2 | 1
+01: pleased
+---------------
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: e1r2 | 3
+enacted: e1r1 | -1
+learn: <e1r2e1r1> | 2 | 1
+learn: <e1r1<e1r2e1r1>> | 1 | 1
+learn: <<e1r1e1r2>e1r1> | 1 | 1
+02: pained
+---------------
+propose: <E1R2E1R1| | 2
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: <e1r2e1r1> | 2
+enacted: e1r1 | -1
+learn: <e1r1e1r1> | -2 | 1
+learn: <e1r2<e1r1e1r1>> | 1 | 1
+learn: <<e1r2e1r1>e1r1> | 1 | 1
+03: pained
+---------------
+propose: <E1R2E1R1| | 1
+propose: E2R2 | 0
+propose: E1R2 | -2
+intended: <e1r2e1r1> | 2
+enacted: e1r1 | -1
+reinforce: <e1r1e1r1> | -2 | 2
+learn: <e1r1<e1r1e1r1>> | -3 | 1
+learn: <<e1r1e1r1>e1r1> | -3 | 1
+04: pained
+---------------
+propose: E2R2 | 0
+propose: <E1R1E1R1| | -2
+propose: <E1R2E1R1| | -4
+propose: E1R2 | -6
+intended: e2r2 | 3
+enacted: e2r1 | -1
+learn: <e1r1e2r1> | -2 | 1
+learn: <e1r1<e1r1e2r1>> | -3 | 1
+learn: <<e1r1e1r1>e2r1> | -3 | 1
+05: pained
+---------------
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: e1r2 | 3
+enacted: e1r1 | -1
+learn: <e2r1e1r1> | -2 | 1
+learn: <e1r1<e2r1e1r1>> | -3 | 1
+learn: <<e1r1e2r1>e1r1> | -3 | 1
+06: pained
+---------------
+propose: E2R2 | -1
+propose: <E1R2E1R1| | -2
+propose: <E1R1E1R1| | -2
+propose: <E1R1E2R1| | -2
+propose: <E2R1E1R1| | -2
+intended: e2r2 | 3
+enacted: e2r1 | -1
+reinforce: <e1r1e2r1> | -2 | 2
+learn: <e2r1<e1r1e2r1>> | -3 | 1
+learn: <<e2r1e1r1>e2r1> | -3 | 1
+07: pained
+---------------
+propose: E2R2 | 0
+propose: <E1R1E2R1| | -2
+propose: E1R2 | -6
+intended: e2r2 | 3
+enacted: e2r2 | 3
+learn: <e2r1e2r2> | 2 | 1
+learn: <e1r1<e2r1e2r2>> | 1 | 1
+learn: <<e1r1e2r1>e2r2> | 1 | 1
+08: pleased
+---------------
+propose: E1R2 | 0
+propose: E2R2 | 0
+intended: e1r2 | 3
+enacted: e1r1 | -1
+learn: <e2r2e1r1> | 2 | 1
+learn: <e2r1<e2r2e1r1>> | 1 | 1
+learn: <<e2r1e2r2>e1r1> | 1 | 1
+09: pained
+---------------
+propose: <E2R1E2R2| | 2
+propose: <E1R2E1R1| | -2
+propose: <E1R1E1R1| | -2
+propose: <E1R1E2R1| | -2
+propose: <E2R1E1R1| | -2
+intended: <e2r1e2r2> | 2
+reinforce: <e2r1e2r2> | 2 | 2
+enacted: <e2r1e2r2> | 2
+reinforce: <e1r1<e2r1e2r2>> | 1 | 2
+learn: <e2r2<e1r1<e2r1e2r2>>> | 4 | 1
+learn: <<e2r2e1r1><e2r1e2r2>> | 4 | 1
+10: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 1
+propose: E2R2 | 0
+propose: E1R2 | -8
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 3
+reinforce: <e1r1<e2r1e2r2>> | 1 | 3
+enacted: <e1r1<e2r1e2r2>> | 1
+learn: <<e2r1e2r2><e1r1<e2r1e2r2>>> | 3 | 1
+learn: <e1r1<<e2r1e2r2><e1r1<e2r1e2r2>>>> | 2 | 1
+learn: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 1
+11: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 2
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 4
+reinforce: <e1r1<e2r1e2r2>> | 1 | 4
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 2
+learn: <<e2r1e2r2><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 4 | 1
+learn: <<<e2r1e2r2><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 4 | 1
+12: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 3
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 2
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 5
+reinforce: <e1r1<e2r1e2r2>> | 1 | 5
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 3
+learn: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 1
+learn: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 1
+13: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 5
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 4
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 6
+reinforce: <e1r1<e2r1e2r2>> | 1 | 6
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 4
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 2
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 2
+14: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 7
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 6
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 7
+reinforce: <e1r1<e2r1e2r2>> | 1 | 7
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 5
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 3
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 3
+15: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 9
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 8
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 8
+reinforce: <e1r1<e2r1e2r2>> | 1 | 8
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 6
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 4
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 4
+16: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 11
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 10
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 9
+reinforce: <e1r1<e2r1e2r2>> | 1 | 9
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 7
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 5
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 5
+17: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 13
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 12
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 10
+reinforce: <e1r1<e2r1e2r2>> | 1 | 10
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 8
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 6
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 6
+18: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 15
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 14
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 11
+reinforce: <e1r1<e2r1e2r2>> | 1 | 11
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 9
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 7
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 7
+19: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 17
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 16
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 12
+reinforce: <e1r1<e2r1e2r2>> | 1 | 12
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 10
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 8
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 8
+20: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 19
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 18
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 13
+reinforce: <e1r1<e2r1e2r2>> | 1 | 13
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 11
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 9
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 9
+21: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 21
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 20
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 14
+reinforce: <e1r1<e2r1e2r2>> | 1 | 14
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 12
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 10
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 10
+22: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 23
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 22
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 15
+reinforce: <e1r1<e2r1e2r2>> | 1 | 15
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 13
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 11
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 11
+23: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 25
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 24
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 16
+reinforce: <e1r1<e2r1e2r2>> | 1 | 16
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 14
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 12
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 12
+24: pleased
+---------------
+propose: <E1R1<E2R1E2R2|| | 27
+propose: <<E1R1<E2R1E2R2||<E1R1<E2R1E2R2||| | 26
+propose: E2R2 | 0
+propose: E1R2 | -4
+intended: <e1r1<e2r1e2r2>> | 1
+reinforce: <e2r1e2r2> | 2 | 17
+reinforce: <e1r1<e2r1e2r2>> | 1 | 17
+enacted: <e1r1<e2r1e2r2>> | 1
+reinforce: <<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>> | 2 | 15
+reinforce: <<e1r1<e2r1e2r2>><<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>>> | 3 | 13
+reinforce: <<<e1r1<e2r1e2r2>><e1r1<e2r1e2r2>>><e1r1<e2r1e2r2>>> | 3 | 13
+25: pleased
+---------------
